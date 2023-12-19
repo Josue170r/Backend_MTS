@@ -49,7 +49,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
         expires: date,
         sameSite: 'none', 
         secure: true, 
-        domain: 'https://josue170r.github.io', 
+        domain: 'josue170r.github.io', 
       },
       { expires: date },
       );
