@@ -44,7 +44,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     valorEncriptado += cipher.final('hex');
     console.log('Valor encriptado:', valorEncriptado);
 
-    res.cookie('codigo_validacion', valorEncriptado, { expires: date, httpOnly: true });
+    res.cookie('codigo_validacion', valorEncriptado, { expires: date });
 
     return res.status(200).json({mensaje:"Se ha enviado el correo"})
 })
