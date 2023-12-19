@@ -27,7 +27,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
             if(results.length!=0){
                 if(results[0].codigo==0){
                     try{
-                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=https://josue170r.github.io/#/newPassword>link</a></h3>")
+                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=https://josue170r.github.io/Front-destinoMx/#/newPassword>link</a></h3>")
                         //cambiar href con respecto a sus puertos de front                                                             (8081 o 8080 u otro)   ^^^^
                     }
                     catch(error){
