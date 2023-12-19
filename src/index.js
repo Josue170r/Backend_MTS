@@ -81,4 +81,6 @@ app.use(routerSitios)
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
   console.log(`server listen on port ${app.get("port")}`);
+  const urlCompleta = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  console.log(urlCompleta);
 });
