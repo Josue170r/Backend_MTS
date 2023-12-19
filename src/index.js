@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:8081'],
+  origin: ['http://localhost:8080', 'http://localhost:8081', 'https://josue170r.github.io/Front-destinoMx'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
