@@ -50,9 +50,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
         sameSite: 'none', 
         secure: true, 
         domain: 'josue170r.github.io', 
-      },
-      { expires: date },
-      );
+      });
 
     return res.status(200).json({mensaje:"Se ha enviado el correo"})
 })
