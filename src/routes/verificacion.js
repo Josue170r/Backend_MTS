@@ -52,6 +52,11 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
         domain: 'josue170r.github.io', 
       });
 
+    console.log(req);
+    
+    const urlCompleta = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    console.log(urlCompleta);
+
     return res.status(200).json({mensaje:"Se ha enviado el correo"})
 })
 

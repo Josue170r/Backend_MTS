@@ -86,6 +86,9 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };
+
+          console.log(req);
+
           console.log("Request:", req.session);
           res
             .status(200)
