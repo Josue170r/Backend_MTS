@@ -5,7 +5,7 @@ export const routerSitios = Router();
 
 // Obtener todos los sitios de un viaje especifico
 routerSitios.get("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",
@@ -38,7 +38,7 @@ routerSitios.get("/api/sitios", (req, res) => {
 
 // Añadir sitios a un viaje a través del idViajes, necesita el placeID
 routerSitios.post("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",
@@ -118,7 +118,7 @@ routerSitios.post("/api/sitios", (req, res) => {
 
 // Actualizar un viaje a través del idViajes y del placeID
 routerSitios.put("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",
@@ -176,7 +176,7 @@ routerSitios.put("/api/sitios", (req, res) => {
 
 
 routerSitios.delete("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",

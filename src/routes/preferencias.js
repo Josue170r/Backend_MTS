@@ -6,14 +6,14 @@ export const routerPreferencias = Router();
 //Consulta - Angel
 routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
   let idUsuario 
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     return res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesion.",
     });
   }
   else{
-    idUsuario=req.session.usuario.idUsuario;
+    idUsuario=req.sessionStore.usuario.idUsuario;
   }
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
   mySqlConnection.query(
@@ -50,14 +50,14 @@ routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
 
 routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
   let idUsuario 
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     return res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesion.",
     });
   }
   else{
-    idUsuario=req.session.usuario.idUsuario;
+    idUsuario=req.sessionStore.usuario.idUsuario;
   }
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
   mySqlConnection.query(
@@ -93,14 +93,14 @@ routerPreferencias.put("/api/modificar-preferencias/", (req, res) => {
   let idUsuario=null;
 
   //verificaciones de existencias
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     return res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesion.",
     });
   }
   else{
-    idUsuario=req.session.usuario.idUsuario;
+    idUsuario=req.sessionStore.usuario.idUsuario;
   }
   if (!idPreferencias) {
     return res.status(500).json({

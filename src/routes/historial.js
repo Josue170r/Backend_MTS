@@ -5,14 +5,14 @@ export const routerHistorial = Router();
 
 // Obtener historial del usuario
 routerHistorial.get("/api/historial", async (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",
     });
   else {
     const getHistoryQuery = `SELECT * FROM historial WHERE idUsuario = ?;`;
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
 
     mySqlConnection.query(getHistoryQuery, [idUsuario], (err, rows, fields) => {
       if (err)
@@ -37,7 +37,7 @@ routerHistorial.get("/api/historial", async (req, res) => {
 
 // Agregar un sitio a favoritos
 routerHistorial.post("/api/historial", async (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({
       exito: false,
       mensaje: "Se debe iniciar sesión",
@@ -50,7 +50,7 @@ routerHistorial.post("/api/historial", async (req, res) => {
       direccionPlaces,
       ratingPlaces
     } = req.body;
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
     const postHistoryQuery = `
       INSERT INTO historial (
         idPlaceLugar,
@@ -83,13 +83,13 @@ routerHistorial.post("/api/historial", async (req, res) => {
 
 // Eliminar un sitio de favoritos
 routerHistorial.delete("/api/historial", (req, res) => {
-  if (!req.session.usuario){
+  if (!req.sessionStore.usuario){
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   }
   else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
     const { idPlaceLugar } = req.query;
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
     mySqlConnection.query(userExistsQuery, [idUsuario], (err, rows, fields) => {
       if (err)
         res.status(500).json({

@@ -6,11 +6,11 @@ export const routerViajes = Router();
 // Funciona OK
 routerViajes.get("/api/viaje", (req, res) => {
   // Verificar que la sesion este iniciada.
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     mySqlConnection.query(
-      `SELECT * FROM viajes WHERE idUsuario = ${req.session.usuario.idUsuario};`,
+      `SELECT * FROM viajes WHERE idUsuario = ${req.sessionStore.usuario.idUsuario};`,
       (err, rows, fields) => {
         if (err) {
           res.status(500).json({
@@ -36,11 +36,11 @@ routerViajes.get("/api/viaje", (req, res) => {
 // Funciona OK
 routerViajes.post("/api/viaje", (req, res) => {
   // Verificar que la sesion este iniciada.
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
     // Extrayendo el id del usuario de la sesion.
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
 
     // Ver que el usuario exista en la BD.
     mySqlConnection.query(
@@ -115,10 +115,10 @@ routerViajes.post("/api/viaje", (req, res) => {
 // nombreMiViaje, diaInicio, diaFinal, descripcionViaje, colorPlantilla, idViajes
 // Funciona OK
 routerViajes.put("/api/viaje", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).send({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaUsuario = `SELECT * FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario};`;
+    const consultaUsuario = `SELECT * FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario};`;
 
     mySqlConnection.query(consultaUsuario, (err, rows, fields) => {
       if (err)
@@ -205,7 +205,7 @@ routerViajes.put("/api/viaje", (req, res) => {
 // Eliminar viaje
 // Recibe idViajes
 routerViajes.delete("/api/viaje", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
     const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.query.idViajes}`;

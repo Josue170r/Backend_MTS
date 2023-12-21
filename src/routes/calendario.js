@@ -5,11 +5,11 @@ export const routerCalendario = Router();
 
 // Consultar calendario
 routerCalendario.get("/api/calendario", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).send("Se debe inicar sesion.");
   } else {
     // Asumo que el ID del usuario está disponible en req.query.idUsuario
-    const userId = req.session.usuario.idUsuario;
+    const userId = req.sessionStore.usuario.idUsuario;
 
     const sqlQuery = "SELECT * FROM viajes WHERE idUsuario = ?";
     const queryParams = [userId];

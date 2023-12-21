@@ -7,7 +7,7 @@ export const routerFavoritos = Router();
 // Recibe:
 // idPlaceLugar
 routerFavoritos.post("/api/favoritos", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesión." });
   } else {
     const { 
@@ -17,7 +17,7 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
       direccionPlaces,
       ratingPlaces
     } = req.body;
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
 
     // Verificar si el usuario existe
@@ -83,13 +83,13 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
 // Recibe:
 // idPlaceLugar
 routerFavoritos.delete("/api/favoritos", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesión." });
   } else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
     const { idPlaceLugar } = req.query;
 
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
     // Verificar si el usuario existe
     mySqlConnection.query(userExistsQuery, [idUsuario], (err, rows, fields) => {
       if (err)
@@ -143,10 +143,10 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
 
 // Obtener los favoritos del usuario
 routerFavoritos.get("/api/favoritos", async (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const idUsuario = req.session.usuario.idUsuario;
+    const idUsuario = req.sessionStore.usuario.idUsuario;
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
 
     // Verificar que el usuario existe
