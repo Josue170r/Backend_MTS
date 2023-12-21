@@ -27,7 +27,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
             if(results.length!=0){
                 if(results[0].codigo==0){
                     try{
-                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=https://josue170r.github.io/Front-destinoMx/#/newPassword>link</a></h3>")
+                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=https://mts-destinomx.netlify.app//#/newPassword>Recuperar Contraseña</a></h3>")
                         //cambiar href con respecto a sus puertos de front                                                             (8081 o 8080 u otro)   ^^^^
                     }
                     catch(error){
@@ -42,9 +42,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
                     valorEncriptado += cipher.final('hex');
                     console.log('Valor encriptado:', valorEncriptado);
 
-                    res.cookie('recuperacion_cookie', valorEncriptado, { expires: date, httpOnly: true });
-
-                    return res.status(200).json({mensaje:"Te enviamos un correo para recuperar tu cuenta"})
+                    return res.status(200).json({mensaje:"Te enviamos un correo para recuperar tu cuenta", recuperacion_cookie: valorEncriptado,})
                 }
                 else{
                     return res.status(200).json({exito:true,mensaje:"No se ha validado el correo"})
@@ -57,17 +55,6 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
     })
 });
 
-routerRecuperacion.post("/api/cookieCorreo",(req, res)=>{
-    let correo
-    if(req.cookies.recuperacion_cookie){
-        correo=req.cookies.recuperacion_cookie
-        console.log(correo);
-        return res.status(200).json({exito:false,correo})
-    }
-    else
-        return res.status(401).json({exito:false,mensaje:"No hay cookie existente"})
-})
-
 routerRecuperacion.post("/api/contrasena-nueva",(req,res)=>{
     let contrasena
 
@@ -79,8 +66,8 @@ routerRecuperacion.post("/api/contrasena-nueva",(req,res)=>{
         contrasena=req.body.contrasena1
         
         let correo
-        if(req.cookies.recuperacion_cookie){
-            correo=req.cookies.recuperacion_cookie
+        if(req.body.recuperacion_cookie){
+            correo=req.body.recuperacion_cookie
             console.log(correo);
             // Crear un objeto de descifrado usando el mismo algoritmo y clave
             const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
