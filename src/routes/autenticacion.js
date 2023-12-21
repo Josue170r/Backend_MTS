@@ -68,7 +68,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
   const { Usuario, contrasena } = req.body;
   console.log(req);
   mySqlConnection.query(
-    `SELECT idUsuario,contrasena,CorreoElectronico,IFNULL(codigoValidacion, 1)as codigoValidacion from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
+    `SELECT idUsuario,contrasena,CorreoElectronico,IFNULL(codigoValidacion, 1)as codigoValidacion from usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
       if (err) {
         res.status(500).json({
