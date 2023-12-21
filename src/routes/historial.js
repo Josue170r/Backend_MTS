@@ -12,7 +12,7 @@ routerHistorial.get("/api/historial", async (req, res) => {
     });
   else {
     const getHistoryQuery = `SELECT * FROM historial WHERE idUsuario = ?;`;
-    const idUsuario = req.sessionStore.usuario.idUsuario;
+    const { idUsuario } = req.query
 
     mySqlConnection.query(getHistoryQuery, [idUsuario], (err, rows, fields) => {
       if (err)
@@ -50,7 +50,7 @@ routerHistorial.post("/api/historial", async (req, res) => {
       direccionPlaces,
       ratingPlaces
     } = req.body;
-    const idUsuario = req.sessionStore.usuario.idUsuario;
+    const { idUsuario } = req.body
     const postHistoryQuery = `
       INSERT INTO historial (
         idPlaceLugar,
@@ -88,8 +88,7 @@ routerHistorial.delete("/api/historial", (req, res) => {
   }
   else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
-    const { idPlaceLugar } = req.query;
-    const idUsuario = req.sessionStore.usuario.idUsuario;
+    const { idPlaceLugar, idUsuario } = req.query;
     mySqlConnection.query(userExistsQuery, [idUsuario], (err, rows, fields) => {
       if (err)
         res.status(500).json({

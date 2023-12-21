@@ -13,7 +13,7 @@ routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
     });
   }
   else{
-    idUsuario=req.sessionStore.usuario.idUsuario;
+    idUsuario = req.query.idUsuario
   }
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
   mySqlConnection.query(
@@ -49,7 +49,7 @@ routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
 });
 
 routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
-  let idUsuario 
+  let idUsuario = ''
   if (!req.sessionStore.usuario) {
     return res.status(403).json({
       exito: false,
@@ -57,7 +57,7 @@ routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
     });
   }
   else{
-    idUsuario=req.sessionStore.usuario.idUsuario;
+    idUsuario = req.body.idUsuario
   }
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
   mySqlConnection.query(
@@ -100,7 +100,7 @@ routerPreferencias.put("/api/modificar-preferencias/", (req, res) => {
     });
   }
   else{
-    idUsuario=req.sessionStore.usuario.idUsuario;
+    idUsuario = req.body.idUsuario
   }
   if (!idPreferencias) {
     return res.status(500).json({

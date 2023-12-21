@@ -10,7 +10,7 @@ routerViajes.get("/api/viaje", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     mySqlConnection.query(
-      `SELECT * FROM viajes WHERE idUsuario = ${req.sessionStore.usuario.idUsuario};`,
+      `SELECT * FROM viajes WHERE idUsuario = ${req.query.idUsuario};`,
       (err, rows, fields) => {
         if (err) {
           res.status(500).json({
@@ -40,7 +40,7 @@ routerViajes.post("/api/viaje", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
     // Extrayendo el id del usuario de la sesion.
-    const idUsuario = req.sessionStore.usuario.idUsuario;
+    const idUsuario = req.body.idUsuario
 
     // Ver que el usuario exista en la BD.
     mySqlConnection.query(
@@ -118,7 +118,7 @@ routerViajes.put("/api/viaje", (req, res) => {
   if (!req.sessionStore.usuario) {
     res.status(403).send({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaUsuario = `SELECT * FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario};`;
+    const consultaUsuario = `SELECT * FROM usuario WHERE idUsuario = ${req.body.idUsuario};`;
 
     mySqlConnection.query(consultaUsuario, (err, rows, fields) => {
       if (err)

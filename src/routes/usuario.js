@@ -7,7 +7,7 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
   if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeEliminacion = `DELETE FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
+    const consultaDeEliminacion = `DELETE FROM usuario WHERE idUsuario = ${req.query.idUsuario}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -26,11 +26,10 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
 });
 
 routerUsuario.get("/api/perfil", (req, res) => {
-  console.log("Request from api/perfil:", req.session);
   if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
+    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.query.idUsuario}`;
     mySqlConnection.query(consultaDeObtencionDeDatos, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -54,8 +53,8 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
     console.log(req);
-    const { Nombre, ApellidoP, ApellidoM } = req.body;
-    const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.sessionStore.usuario.idUsuario}"`;
+    const { Nombre, ApellidoP, ApellidoM, idUsuario } = req.body;
+    const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${idUsuario}"`;
     mySqlConnection.query(consultaCambiarDatos, (err, rows, fields) => {
       if (err)
         res.res.status(500).json({
@@ -78,8 +77,8 @@ routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
   if (!req.sessionStore.usuario)
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
-    const { contrasena, nuevaContrasena } = req.body;
-    const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
+    const { contrasena, nuevaContrasena , idUsuario} = req.body;
+    const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${idUsuario}`;
     mySqlConnection.query(consultaVerificarContrasena, (err, rows, fields) => {
       if (err)
         res.status(500).json({

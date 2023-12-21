@@ -92,7 +92,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           console.log("HOLA DESDE EL ID", req.session.usuario);
           res
             .status(200)
-            .json({ exito: true, mensaje: "Sesion iniciada con exito.", correo:rows[0].CorreoElectronico, validacion:rows[0].codigoValidacion});
+            .json({ exito: true, mensaje: "Sesion iniciada con exito.", correo:rows[0].CorreoElectronico, validacion:rows[0].codigoValidacion, idUsuario:rows[0].idUsuario});
         } else {
           res
             .status(403)
