@@ -10,7 +10,7 @@ const secretKey = 'MTS-2023';
 
 routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     //fecha y hora de vencimiento, 5 minutos despues
-    const date=new Date(Date.now()+300000)
+    const date=new Date(Date.now()+600000)
     console.log(date)
 
     let correo
@@ -31,7 +31,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     }
 
     try{
-        mandarCorreo(correo,"Código de verificación - MTS","<h2>El siguiente código de verificación es válido durante los proximos: <br> 5 minutos <br>  Su código de verificación es: </h2> <h3>"+cifra+"</h3>")
+        mandarCorreo(correo,"Código de verificación - MTS","<h2>El siguiente código de verificación es válido durante los proximos: <br> 10 minutos <br>  Su código de verificación es: </h2> <h3>"+cifra+"</h3>")
     }
     catch(error){
         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
@@ -42,9 +42,15 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     const cipher = crypto.createCipher('aes-256-cbc', secretKey);
     let valorEncriptado = cipher.update(cifra, 'utf-8', 'hex');
     valorEncriptado += cipher.final('hex');
-    console.log('Valor encriptado:', valorEncriptado);
 
-    res.cookie('codigo_validacion', valorEncriptado, { expires: date, httpOnly: true });
+    res.status(200).json({
+        codigo_validacion: cifra,
+        valorEncriptado: valorEncriptado,
+        options: {
+          expires: date,
+          httpOnly: true,
+        },
+    });
 
     console.log(req);
     
@@ -55,7 +61,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
 })
 
 routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
-
+    console.log(req)
     let codigoUsuario
     let correo
 
@@ -71,8 +77,8 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
 
     //obtener encriptado de cookie
     let codigo
-    if(req.cookies.codigo_validacion)
-        codigo=req.cookies.codigo_validacion
+    if(req.body.codigo_validacion)
+        codigo=req.body.codigo_validacion
     else
         return res.status(400).json({exito:false,mensaje:"Se ha agotado su tiempo"})
 
