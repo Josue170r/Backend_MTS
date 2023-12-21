@@ -46,6 +46,11 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
 
     res.cookie('codigo_validacion', valorEncriptado, { expires: date, httpOnly: true });
 
+    console.log(req);
+    
+    const urlCompleta = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    console.log(urlCompleta);
+
     return res.status(200).json({mensaje:"Se ha enviado el correo"})
 })
 
