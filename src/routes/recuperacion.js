@@ -65,17 +65,11 @@ routerRecuperacion.post("/api/contrasena-nueva",(req,res)=>{
     else{
         contrasena=req.body.contrasena1
         
-        let correo
+        let correoD
         if(req.body.recuperacion_cookie){
-            correo=req.body.recuperacion_cookie
-            console.log(correo);
-            // Crear un objeto de descifrado usando el mismo algoritmo y clave
-            const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
-            //Desencriptar el valor
-            let correoD = decipher.update(correo, 'hex', 'utf-8');
-            correoD += decipher.final('utf-8');
+            correoD=req.body.recuperacion_cookie
+            console.log(correoD);
 
-            console.log('Valor desencriptado:', correo);
             console.log(contrasena);
             mySqlConnection.query(`update usuario set contrasena="${contrasena}" where CorreoElectronico="${correoD}"`,
             (err, results) => {
