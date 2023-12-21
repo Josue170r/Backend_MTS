@@ -68,7 +68,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
   const { Usuario, contrasena } = req.body;
   console.log(req);
   mySqlConnection.query(
-    `SELECT idUsuario,contrasena,CorreoElectronico,IFNULL(codigoValidacion, 1)as codigoValidacion from usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
+    `SELECT idUsuario,contrasena,CorreoElectronico,IFNULL(codigoValidacion, 1)as codigoValidacion from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -86,7 +86,10 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };
-          console.log("Request:", req.session);
+          req.sessionStore.usuario = {
+            idUsuario: rows[0].idUsuario,
+          };
+          console.log("HOLA DESDE EL ID", req.session.usuario);
           res
             .status(200)
             .json({ exito: true, mensaje: "Sesion iniciada con exito.", correo:rows[0].CorreoElectronico, validacion:rows[0].codigoValidacion});
@@ -117,7 +120,8 @@ routerAutenticacion.get("/api/cerrar-sesion", (req, res) => {
 });
 
 routerAutenticacion.post("/api/cuenta-activa", (req, res) => {
-  if (req.session.usuario) {
+  console.log(req.sessionStore)
+  if (req.sessionStore.usuario) {
     return res.status(200).json({
       success: true,
       error: "usuario activo",

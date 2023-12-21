@@ -4,10 +4,10 @@ import { Router } from "express";
 export const routerUsuario = Router();
 
 routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeEliminacion = `DELETE FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    const consultaDeEliminacion = `DELETE FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -27,10 +27,10 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
 
 routerUsuario.get("/api/perfil", (req, res) => {
   console.log("Request from api/perfil:", req.session);
-  if (!req.session.usuario) {
+  if (!req.sessionStore.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
     mySqlConnection.query(consultaDeObtencionDeDatos, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -50,12 +50,12 @@ routerUsuario.get("/api/perfil", (req, res) => {
 });
 
 routerUsuario.put("/api/editar-perfil", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
     console.log(req);
     const { Nombre, ApellidoP, ApellidoM } = req.body;
-    const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.session.usuario.idUsuario}"`;
+    const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.sessionStore.usuario.idUsuario}"`;
     mySqlConnection.query(consultaCambiarDatos, (err, rows, fields) => {
       if (err)
         res.res.status(500).json({
@@ -75,11 +75,11 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
 });
 
 routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
-  if (!req.session.usuario)
+  if (!req.sessionStore.usuario)
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
     const { contrasena, nuevaContrasena } = req.body;
-    const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
     mySqlConnection.query(consultaVerificarContrasena, (err, rows, fields) => {
       if (err)
         res.status(500).json({
@@ -94,7 +94,7 @@ routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
             mensaje: "Contraseña incorrecta",
           });
         else {
-          const consultaActualizarContrasena = `UPDATE usuario SET contrasena = "${nuevaContrasena}" WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+          const consultaActualizarContrasena = `UPDATE usuario SET contrasena = "${nuevaContrasena}" WHERE idUsuario = ${req.sessionStore.usuario.idUsuario}`;
           mySqlConnection.query(
             consultaActualizarContrasena,
             (err, rows, fields) => {

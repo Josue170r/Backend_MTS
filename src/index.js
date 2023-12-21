@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:8081', 'https://josue170r.github.io'],
+  origin: ['http://localhost:8080', 'http://localhost:8081', 'https://josue170r.github.io', 'https://mts-destinomx.netlify.app'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
